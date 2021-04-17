@@ -9,28 +9,48 @@ public class Car extends Vehicle {
     }
 
     /**
-     * Car's movement which means its change of coordinate point based on speed. The strategy of movement for car starts
-     *  with X axis then Y axis towards its destination.
+     * Car's movement. The change of coordinate point that is based on vehicle's speed.
      */
     @Override
     public void move() {
-        if(!Available){
-            int remainingDistanceForXWithDirection = (getDestination().x - getCurrentPosition().x);
-            if(getSpeed() > Math.abs(remainingDistanceForXWithDirection)){
-                // to facilitate if speed larger than remainingDistanceForX but lesser than remainingDistanceForY
-                // in another words, in a single move, it reached the destination's X point and moved towards Y point
-                // we added this 2 lines to cover that case
-                getCurrentPosition().x = getDestination().x;
-                int leftOverSpeed = getSpeed() - Math.abs(remainingDistanceForXWithDirection);
+        travelToNextDestinationWithNoOfStep(getSpeed());
+    }
 
-                int remainingDistanceForYWithDirection = (getDestination().y - getCurrentPosition().y);
-                int travelDistanceWithDirection = (remainingDistanceForYWithDirection>0)? leftOverSpeed : leftOverSpeed *-1;
-                getCurrentPosition().y = getCurrentPosition().y + travelDistanceWithDirection;
-            } else {
-                int travelDistanceWithDirection = (remainingDistanceForXWithDirection>0)? getSpeed() : getSpeed() *-1;
-                getCurrentPosition().x = getCurrentPosition().x + travelDistanceWithDirection;
+    /**
+     * The strategy of movement for car starts by travelling the X axis and then the Y axis towards its destination.
+     * @param totalNoOfSteps remaining travelling steps towards destination
+     */
+    private void travelToNextDestinationWithNoOfStep(int totalNoOfSteps){
+        Point currentDestination = getDestinationList().peek();
+        if(currentDestination != null){
+            int XAxisDistanceWithDirection = (currentDestination.x - getCurrentPosition().x);
+            int remainingSteps = totalNoOfSteps - Math.abs(XAxisDistanceWithDirection);
+            int YAxisDistanceWithDirection = (currentDestination.y - getCurrentPosition().y);
+
+            // case 3&4: if the totalNoOfSteps is above the travelling distance to destination
+            if(remainingSteps > Math.abs(YAxisDistanceWithDirection)){
+                // We make the vehicle reach its destination and attempt to update status
+                getCurrentPosition().x = currentDestination.x;
+                getCurrentPosition().y = currentDestination.y;
+                updateAvailability();
+                // if there are still remaining destination in the list we recurse back to top of function
+                // until there is no remaining steps or no remaining destination
+                if(!Available){
+                    travelToNextDestinationWithNoOfStep(remainingSteps - Math.abs(YAxisDistanceWithDirection));
+                }
             }
-            updateStatus();
+            // case 2: totalNoOfSteps above distance to destination for X axis but within distance for Y axis
+            else if(totalNoOfSteps > Math.abs(XAxisDistanceWithDirection)){
+                getCurrentPosition().x = currentDestination.x;
+                remainingSteps = (YAxisDistanceWithDirection>0)? remainingSteps : remainingSteps *-1;
+                getCurrentPosition().y = getCurrentPosition().y + remainingSteps;
+            }
+            //case 1: totalNoOfSteps within distance to destination for X axis
+            else {
+                totalNoOfSteps = (XAxisDistanceWithDirection>0)? totalNoOfSteps : totalNoOfSteps *-1;
+                getCurrentPosition().x = getCurrentPosition().x + totalNoOfSteps;
+            }
+            updateAvailability();
         }
     }
 

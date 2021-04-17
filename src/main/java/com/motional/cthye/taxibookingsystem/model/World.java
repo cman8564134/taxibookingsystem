@@ -1,6 +1,7 @@
 package com.motional.cthye.taxibookingsystem.model;
 
 import com.motional.cthye.taxibookingsystem.util.DistanceUtil;
+import com.motional.cthye.taxibookingsystem.util.VehicleFactory;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -11,7 +12,7 @@ public final class World {
     //there will always be only one world
     private static World World;
     //In this world, there are many unique vehicles
-    HashSet<Vehicle> Vehicles = new HashSet<>();
+    HashSet<Vehicle> Vehicles;
 
     private World(){}
 
@@ -32,7 +33,7 @@ public final class World {
     }
 
     public void addVehicleIntoWorld(Vehicle vehicle){
-        Vehicles.add(vehicle);
+        this.Vehicles.add(vehicle);
     }
 
     public Vehicle getNearestAvailableVehicleFromPoint(Point point){
@@ -53,6 +54,20 @@ public final class World {
 
     public List<Vehicle> getAvailableVehicles(){
         return this.Vehicles.stream().distinct().filter(Vehicle::isAvailable).collect(Collectors.toList());
+    }
+
+    /**
+     * Reset the world into its initial state
+     */
+    public void reset(){
+        this.Vehicles= new HashSet<>();
+        VehicleFactory factory = new VehicleFactory();
+        Vehicle vehicle1 = factory.getVehicle(VehicleFactory.NORMAL_CAR, 1);
+        Vehicle vehicle2 = factory.getVehicle(VehicleFactory.NORMAL_CAR, 2);
+        Vehicle vehicle3 = factory.getVehicle(VehicleFactory.NORMAL_CAR, 3);
+        addVehicleIntoWorld(vehicle1);
+        addVehicleIntoWorld(vehicle2);
+        addVehicleIntoWorld(vehicle3);
     }
 
 

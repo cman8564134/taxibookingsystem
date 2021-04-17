@@ -1,10 +1,11 @@
 package com.motional.cthye.taxibookingsystem.model;
 
 import java.awt.*;
+import java.util.LinkedList;
 
 public abstract class Vehicle implements Movable {
     private Point currentPosition;
-    private Point destination;
+    private LinkedList<Point> Destinations = new LinkedList<>();
     protected int ID;
     protected int Speed;
     boolean Available = true;
@@ -53,12 +54,12 @@ public abstract class Vehicle implements Movable {
         this.currentPosition = currentPosition;
     }
 
-    public Point getDestination() {
-        return destination;
+    public LinkedList<Point> getDestinationList() {
+        return this.Destinations;
     }
 
-    public void setDestination(Point destination) {
-        this.destination = destination;
+    public void addToDestinationList(Point point) {
+        this.Destinations.add(point);
     }
 
     @Override
@@ -69,10 +70,15 @@ public abstract class Vehicle implements Movable {
         return false;
     }
 
-    protected void updateStatus(){
-        if(this.currentPosition.equals(this.destination)){
-            setAvailable(true);
-            setDestination(null);
+    /**
+     * Checks the status of the driver whether all destinations has been arrived.
+     */
+    protected void updateAvailability(){
+        if(this.currentPosition.equals(this.Destinations.peek())){
+            Destinations.removeFirst();
+            if(Destinations.isEmpty()){
+                setAvailable(true);
+            }
         }
     }
 }
