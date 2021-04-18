@@ -1,17 +1,24 @@
 package com.motional.cthye.taxibookingsystem.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.*;
 import java.util.LinkedList;
 
+/**
+ * Abstract parent class for all vehicle that can exist in the world
+ */
 public abstract class Vehicle implements Movable {
     private Point currentPosition;
-    private LinkedList<Point> Destinations = new LinkedList<>();
-    protected int ID;
-    protected int Speed;
-    boolean Available = true;
+    private final LinkedList<Point> Destinations = new LinkedList<>();
+    private int ID;
+    private int Speed;
+    private boolean Available = true;
+    private static final Logger LOGGER = LoggerFactory.getLogger(Vehicle.class);
 
     /**
-     * to ensure that all vehicles have these information available
+     * to ensure that all vehicles have required information during instantiation
      */
     private Vehicle() {
     }
@@ -59,24 +66,27 @@ public abstract class Vehicle implements Movable {
     }
 
     public void addToDestinationList(Point point) {
+        LOGGER.debug("Adding to destination list for point: " + point.toString());
         this.Destinations.add(point);
+        setAvailable(false);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Vehicle){
+        if (obj instanceof Vehicle) {
             return this.ID == ((Vehicle) obj).ID;
         }
         return false;
     }
 
     /**
-     * Checks the status of the driver whether all destinations has been arrived.
+     * Updates the availability of the driver vehicle
      */
-    protected void updateAvailability(){
-        if(this.currentPosition.equals(this.Destinations.peek())){
+    protected void updateAvailability() {
+        LOGGER.debug("Attempting to update the driver vehicle's availability");
+        if (this.currentPosition.equals(this.Destinations.peek())) {
             Destinations.removeFirst();
-            if(Destinations.isEmpty()){
+            if (Destinations.isEmpty()) {
                 setAvailable(true);
             }
         }
