@@ -4,6 +4,8 @@ import com.motional.cthye.taxibookingsystem.integ.dto.BookingRequestDTO;
 import com.motional.cthye.taxibookingsystem.integ.dto.BookingResponseDTO;
 import com.motional.cthye.taxibookingsystem.integ.service.VehicleService;
 import com.motional.cthye.taxibookingsystem.integ.service.WorldService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
+@Api(tags = "Taxi Booking API", description="API endpoint for taxi booking application")
 public class TaxiBookingApiController {
     private final VehicleService vehicleService;
     private final WorldService worldService;
@@ -27,6 +30,7 @@ public class TaxiBookingApiController {
         this.worldService = worldService;
     }
 
+    @ApiOperation(value = "Book A Ride", response = BookingResponseDTO.class)
     @PostMapping("/book")
     @ResponseStatus(HttpStatus.CREATED)
     public BookingResponseDTO book(@RequestBody @Valid BookingRequestDTO requestDTO) {
@@ -34,6 +38,7 @@ public class TaxiBookingApiController {
         return vehicleService.bookARide(requestDTO);
     }
 
+    @ApiOperation(value = "Move one time unit for the world's clock")
     @PostMapping("/tick")
     @ResponseStatus(HttpStatus.OK)
     public void tick() {
@@ -41,6 +46,7 @@ public class TaxiBookingApiController {
         worldService.tick();
     }
 
+    @ApiOperation(value = "Reset the world to initial state")
     @PutMapping("/reset")
     @ResponseStatus(HttpStatus.OK)
     public void reset() {
