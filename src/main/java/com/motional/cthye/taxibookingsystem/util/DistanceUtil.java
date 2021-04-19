@@ -30,10 +30,10 @@ public final class DistanceUtil {
      * @param co2 Second Coordinate
      * @return the rounded up travelling distance between 2 coordinates
      */
-    public static double getTravellingDistanceBetweenTwoPoints(Point co1, Point co2) {
+    public static int getTravellingDistanceBetweenTwoPoints(Point co1, Point co2) {
         LOGGER.debug("Calculating travelling distance between " + co1.toString() + " and " + co2.toString());
         double XDistance = Math.abs(co1.getX() - co2.getX());
         double YDistance = Math.abs(co1.getY() - co2.getY());
-        return Math.round(XDistance + YDistance);
+        return (int) Math.round(XDistance + YDistance);
     }
 }

@@ -17,11 +17,6 @@ public abstract class Vehicle implements Movable {
     private boolean Available = true;
     private static final Logger LOGGER = LoggerFactory.getLogger(Vehicle.class);
 
-    /**
-     * to ensure that all vehicles have required information during instantiation
-     */
-    private Vehicle() {
-    }
 
     public Vehicle(int ID, int speed, Point pos) {
         this.ID = ID;

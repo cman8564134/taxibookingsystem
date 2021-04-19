@@ -1,5 +1,6 @@
 package com.motional.cthye.taxibookingsystem.model;
 
+import com.motional.cthye.taxibookingsystem.configuration.UnknownCarTypeException;
 import com.motional.cthye.taxibookingsystem.util.DistanceUtil;
 import com.motional.cthye.taxibookingsystem.util.VehicleFactory;
 import org.slf4j.Logger;
@@ -13,11 +14,13 @@ import java.util.stream.Collectors;
 /**
  * A single World that has many unique vehicles
  */
-public final class World {
+public class World {
     //there will always be only one world
     private static World World;
     //In this world, there are many unique vehicles
     private HashSet<Vehicle> Vehicles = new HashSet<>();
+    //to manufacture vehicles we have factories around the world
+    private VehicleFactory vehicleFactory;
     private static final Logger LOGGER = LoggerFactory.getLogger(World.class);
 
     private World() {
@@ -103,13 +106,17 @@ public final class World {
     public void reset() {
         LOGGER.debug("Resetting this world to its initial state");
         this.Vehicles = new HashSet<>();
-        VehicleFactory factory = new VehicleFactory();
-        Vehicle vehicle1 = factory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 1);
-        Vehicle vehicle2 = factory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 2);
-        Vehicle vehicle3 = factory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 3);
-        addVehicleIntoWorld(vehicle1);
-        addVehicleIntoWorld(vehicle2);
-        addVehicleIntoWorld(vehicle3);
+        this.vehicleFactory = (vehicleFactory == null) ? new VehicleFactory() : vehicleFactory;
+        try {
+            Vehicle vehicle1 = this.vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 1);
+            Vehicle vehicle2 = this.vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 2);
+            Vehicle vehicle3 = this.vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 3);
+            addVehicleIntoWorld(vehicle1);
+            addVehicleIntoWorld(vehicle2);
+            addVehicleIntoWorld(vehicle3);
+        } catch (UnknownCarTypeException e) {
+            LOGGER.error("Unknown car type was passed to the vehicle factory");
+        }
     }
 
 

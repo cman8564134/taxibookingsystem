@@ -67,9 +67,9 @@ public class Booking {
     private int calculateTotalTime() {
         LOGGER.debug("Calculating the total time for this booking");
         //distance from driver to customer location
-        double distance1 = DistanceUtil.getTravellingDistanceBetweenTwoPoints(this.Driver.getCurrentPosition(), this.StartingPoint);
+        int distance1 = DistanceUtil.getTravellingDistanceBetweenTwoPoints(this.Driver.getCurrentPosition(), this.StartingPoint);
         //distance from customer location to destination
-        double distance2 = DistanceUtil.getTravellingDistanceBetweenTwoPoints(this.StartingPoint, this.EndingPoint);
-        return (int) Math.round(distance1 + distance2);
+        int distance2 = DistanceUtil.getTravellingDistanceBetweenTwoPoints(this.StartingPoint, this.EndingPoint);
+        return distance1 + distance2;
     }
 }
