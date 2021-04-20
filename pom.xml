@@ -16,6 +16,7 @@
     <properties>
         <java.version>11</java.version>
     </properties>
+    <packaging>war</packaging>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -68,6 +69,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>${artifactId}</finalName>
     </build>
 
 </project>
