@@ -19,8 +19,6 @@ public class World {
     private static World World;
     //In this world, there are many unique vehicles
     private HashSet<Vehicle> Vehicles = new HashSet<>();
-    //to manufacture vehicles we have factories around the world
-    private VehicleFactory vehicleFactory;
     private static final Logger LOGGER = LoggerFactory.getLogger(World.class);
 
     private World() {
