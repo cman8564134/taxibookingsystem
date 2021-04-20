@@ -105,23 +105,12 @@ public class World {
      */
     public void reset() {
         LOGGER.debug("Resetting this world to its initial state");
-        this.Vehicles = new HashSet<>();
-        this.vehicleFactory =  new VehicleFactory();
-        try {
-            Vehicle vehicle1 = this.vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 1);
-            Vehicle vehicle2 = this.vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 2);
-            Vehicle vehicle3 = this.vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 3);
-            addVehicleIntoWorld(vehicle1);
-            addVehicleIntoWorld(vehicle2);
-            addVehicleIntoWorld(vehicle3);
-        } catch (UnknownCarTypeException e) {
-            LOGGER.error("Unknown car type was passed to the vehicle factory");
-        }
+        reset(new VehicleFactory());
     }
 
     /**
-     * Reset the world to its initial state and providing the factory (Used in unit test)
-     * @param factory vehicle factory object to use;
+     * Reset the world to its initial state with extra factory parameter for caller to define(Used in unit test)
+     * @param factory vehicle factory object for vehicle creation;
      */
     public void reset(VehicleFactory factory) {
         LOGGER.debug("Resetting this world to its initial state");
