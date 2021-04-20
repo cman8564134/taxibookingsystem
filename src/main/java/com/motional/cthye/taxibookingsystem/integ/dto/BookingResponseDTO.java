@@ -1,5 +1,7 @@
 package com.motional.cthye.taxibookingsystem.integ.dto;
 
+import com.motional.cthye.taxibookingsystem.model.Vehicle;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -33,5 +35,14 @@ public class BookingResponseDTO {
 
     public void setTotal_time(int total_time) {
         this.total_time = total_time;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof BookingResponseDTO){
+            BookingResponseDTO responseDTO = (BookingResponseDTO) obj;
+            return this.car_id == responseDTO.getCar_id() && this.total_time == responseDTO.getTotal_time();
+        }
+        return false;
     }
 }

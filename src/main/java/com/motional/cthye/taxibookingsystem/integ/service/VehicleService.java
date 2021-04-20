@@ -16,10 +16,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class VehicleService {
 
+    private final World world;
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleService.class);
 
     @Autowired
-    public VehicleService() {
+    public VehicleService(World world) {
+        this.world = world;
     }
 
     /**
@@ -30,7 +32,7 @@ public class VehicleService {
      */
     public BookingResponseDTO bookARide(BookingRequestDTO requestDTO) {
         LOGGER.debug("Attempting to book a ride from " + requestDTO.getSource().toString() + " to " + requestDTO.getDestination().toString());
-        Vehicle vehicle = World.getInstance().getNearestAvailableVehicleFromPoint(requestDTO.getSource());
+        Vehicle vehicle = world.getNearestAvailableVehicleFromPoint(requestDTO.getSource());
         BookingResponseDTO bookingResponseDTO = null;
         if (vehicle != null) {
             Booking booking = new Booking(requestDTO.getSource(), requestDTO.getDestination(), vehicle);

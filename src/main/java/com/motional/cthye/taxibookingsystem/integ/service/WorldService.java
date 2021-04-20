@@ -10,16 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class WorldService {
 
+    private final World world;
+
     @Autowired
-    public WorldService() {
+    public WorldService(World world) {
+        this.world = world;
     }
 
     public void tick() {
-        World.getInstance().tick();
+        world.tick();
     }
 
     public void reset() {
-        World.getInstance().reset();
+        world.reset();
     }
 
 }

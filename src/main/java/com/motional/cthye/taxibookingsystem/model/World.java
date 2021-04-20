@@ -106,11 +106,30 @@ public class World {
     public void reset() {
         LOGGER.debug("Resetting this world to its initial state");
         this.Vehicles = new HashSet<>();
-        this.vehicleFactory = (vehicleFactory == null) ? new VehicleFactory() : vehicleFactory;
+        this.vehicleFactory =  new VehicleFactory();
         try {
             Vehicle vehicle1 = this.vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 1);
             Vehicle vehicle2 = this.vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 2);
             Vehicle vehicle3 = this.vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 3);
+            addVehicleIntoWorld(vehicle1);
+            addVehicleIntoWorld(vehicle2);
+            addVehicleIntoWorld(vehicle3);
+        } catch (UnknownCarTypeException e) {
+            LOGGER.error("Unknown car type was passed to the vehicle factory");
+        }
+    }
+
+    /**
+     * Reset the world to its initial state and providing the factory (Used in unit test)
+     * @param factory vehicle factory object to use;
+     */
+    public void reset(VehicleFactory factory) {
+        LOGGER.debug("Resetting this world to its initial state");
+        this.Vehicles = new HashSet<>();
+        try {
+            Vehicle vehicle1 = factory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 1);
+            Vehicle vehicle2 = factory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 2);
+            Vehicle vehicle3 = factory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 3);
             addVehicleIntoWorld(vehicle1);
             addVehicleIntoWorld(vehicle2);
             addVehicleIntoWorld(vehicle3);

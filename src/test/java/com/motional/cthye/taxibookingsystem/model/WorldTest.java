@@ -32,7 +32,7 @@ public class WorldTest {
         when(vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 1)).thenReturn(driver1);
         when(vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 2)).thenReturn(driver2);
         when(vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 3)).thenReturn(driver3);
-        world.reset();
+        world.reset(vehicleFactory);
     }
 
 
@@ -44,7 +44,7 @@ public class WorldTest {
     @Test
     public void testReset_InitialState_FailedWithException() throws UnknownCarTypeException {
         when(vehicleFactory.getVehicle(VehicleFactory.VEHICLE_TYPE.NORMAL_CAR, 3)).thenThrow(new UnknownCarTypeException("Incorrect Vehicle Type"));
-        world.reset();
+        world.reset(vehicleFactory);
         assertTrue("World should have 0 vehicles because the getVehicle has failed with exception", world.getAllVehicles().size() == 0);
     }
 
